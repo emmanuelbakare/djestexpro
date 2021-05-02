@@ -1,0 +1,40 @@
+[1mdiff --git a/db.sqlite3 b/db.sqlite3[m
+[1mindex d3cbbed..99e8aed 100644[m
+Binary files a/db.sqlite3 and b/db.sqlite3 differ
+[1mdiff --git a/estate/__pycache__/models.cpython-38.pyc b/estate/__pycache__/models.cpython-38.pyc[m
+[1mindex 466e755..ebd9886 100644[m
+Binary files a/estate/__pycache__/models.cpython-38.pyc and b/estate/__pycache__/models.cpython-38.pyc differ
+[1mdiff --git a/estate/models.py b/estate/models.py[m
+[1mindex 03bf8a6..393d28e 100644[m
+[1m--- a/estate/models.py[m
+[1m+++ b/estate/models.py[m
+[36m@@ -31,17 +31,23 @@[m [mclass Estate(models.Model):[m
+     state_region = models.CharField(_("state or region"), max_length=100)[m
+     country = models.CharField(_("country"), max_length=100)[m
+     # address= models.OneToOneField(EstateAddress, blank=True, null=True, on_delete=models.CASCADE)[m
+[31m-    admin=models.ManyToManyField(User, verbose_name=_("admin"))[m
+[32m+[m[32m    # admin=models.ManyToManyField(User, verbose_name=_("admin"))[m
+     comment=models.TextField(_("comment"), null=True, blank=True)[m
+[32m+[m[32m    created_date= models.DateTimeField(_("Created Date"),auto_now_add=True)[m
+[32m+[m
+[32m+[m[32m    class Meta:[m
+[32m+[m[32m        ordering = ['created_date'][m
+ [m
+     def __str__(self):[m
+         return  f'{self.name} -  {self.city}, {self.country}'[m
+ [m
+[31m-# class EstateAdmin(models.Model):[m
+[31m-#     user = models.ManyToManyField(User, verbose_name=_("user"))[m
+[31m-#     estate=models.ForeignKey(Estate ,verbose_name=_("Estate"), on_delete=models.CASCADE)[m
+[31m-#     # estate=models.ManyToManyField(Estate, verbose_name=_("Estate"))[m
+[31m-#     perms = models.IntegerField(_("permission"), null=True, blank=True)[m
+[32m+[m[32mclass EstateAdmin(models.Model):[m
+[32m+[m[32m    user = models.ForeignKey(User, verbose_name=_("User"), on_delete=models.CASCADE)[m
+[32m+[m[32m    estate=models.ForeignKey(Estate, verbose_name=_("Estate"), on_delete=models.CASCADE, related_name="admin")[m
+[32m+[m[32m    perms = models.IntegerField(_("permission"), null=True, blank=True)[m
+[32m+[m
+[32m+[m[32m    class Meta:[m
+[32m+[m[32m        unique_together=['user','estate'][m
+ [m
+ [m
+ [m
