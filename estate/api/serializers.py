@@ -1,4 +1,5 @@
-from rest_framework import serializers
+from rest_framework import serializers 
+from rest_framework.response import Response
 from estate.models import Estate, EstateAdmin, EstateType
 from accounts.api.serializers import AccountSerializer
 
@@ -21,7 +22,34 @@ class EstateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Estate
         fields = "__all__"
+
+class EstateResidentSerializer(serializers.ModelSerializer):
+    # admins=serializers.SerializerMethodField()
+    class Meta:
+        model = Estate
+        fields="__all__"
+        # fields= ['name','total_house', 'estate_type','street1',
+        #          'city','state_region','country','status','comment',
+        #          'created_date', 'admins'
+
+        #   
+   
+ 
+    # def get_admins(self, obj):
+    #     # admins=EstateAdmin.objects.filter(estate=obj)
+    #     admins=EstateAdmin.objects.filter(estate=obj)
+    #     adminSerializer=EstateAdminSerializer(admins, many=True)
+    #     # return Response(adminSerializer.data)
+    #     return adminSerializer.data
     
+    # def create(self,validated_data):
+    #     users=validated_data.pop('account')
+    #     resident=validated_data.pop('resident')
+    #     print('USER INFO ', users)
+    #     print('RESIDENT INFO', resident)
+    #     print('OTHER DATA - ESTATE ', **validated_data)
+
+
 
     # def create(self,validated_data):
     #     print('VALIDATED DATA : ',validated_data)

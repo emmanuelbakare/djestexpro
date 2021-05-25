@@ -30,15 +30,16 @@ class EstateType(models.Model):
 
 class Estate(models.Model):
     name= models.CharField(_("estate name"), max_length=50)
-    total_house = models.IntegerField(_("total house"), null=True, blank=True)
     estate_type=models.ForeignKey(EstateType, on_delete=models.CASCADE)
     street1 = models.CharField(_("street 1"), max_length=150)
     city = models.CharField(_("city"), max_length=20)
     state_region = models.CharField(_("state or region"), max_length=100)
     country = models.CharField(_("country"), max_length=100)
     status=models.IntegerField(_("status"), default=1) #0. Inactive, 1. Active, 2. suspended, 3. Processing
+    total_house = models.IntegerField(_("total house"), null=True, blank=True)
     comment=models.TextField(_("comment"), null=True, blank=True)
     created_date= models.DateTimeField(_("Created Date"),auto_now_add=True)
+    admins= models.ManyToManyField(User,through='EstateAdmin')
 
     class Meta:
         ordering = ['-created_date']
@@ -48,8 +49,8 @@ class Estate(models.Model):
 
 class EstateAdmin(models.Model):
     user = models.ForeignKey(User, verbose_name=_("User"), on_delete=models.CASCADE)
-    estate=models.ForeignKey(Estate, verbose_name=_("Estate"), on_delete=models.CASCADE, related_name="admins")
-    perms = models.IntegerField(_("permission"), null=True, blank=True)
+    estate=models.ForeignKey(Estate, verbose_name=_("Estate"), on_delete=models.CASCADE)
+    perms = models.IntegerField(_("permission"), default=1) # 0=deactivated,1=active ... etc
 
     def __str__(self):
         if self.user.username:

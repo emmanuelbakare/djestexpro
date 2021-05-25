@@ -22,41 +22,45 @@ class CreateEstateAdminAPIView(mixins.CreateModelMixin,
         return self.list(request,*args,**kwargs)
     
     def post(self, request, *args,**kwargs):
-        # get all the request.data into a dictionary
+        print('ALL REQUEST', request)
+        print('ALL REQUEST DATA ', request.data)
         account_dict=request.data.pop('account')
         resident_dict=request.data.pop('resident')
-        estate_dict=request.data
-        # estate_dict=request.data.pop('estate')
+        estate_dict=request.data.pop('estate')
+        print('RESIDENT', resident_dict)
+        print('REMAINING REQUEST ', request.data)
+        print('ACCOUNT', account_dict)
+        print('ESTATE', estate_dict)
 
         estate = Estate(**estate_dict)
-        user=request.user
-        sa=EstateAdmin(user=user, estate=estate)
+        print('CREATED ESTATE ', estate)
+        user=self.request.user
+        sa=EstateAdmin(user=user, estate=estate )
+
+        print('CREATED ESTATE ADMIN ', sa)
+        # save the data after creating them
+        Resident.create(**resident_dict)
+
+
 
         estate.save()
         sa.save()
+        
+        
+        # if bool(user['first_name']):
+        #     user.first_name=account_dict['first_name']
+        #     user.last_name=account_dict['last_name']
 
-        # add user and estate to resident dictionary since resident model requires it
-        resident_dict['user']=user
-        resident_dict['estate']=estate
-        resident=Resident(**resident_dict) # create resident
-        resident.status=1 # make this resident active
-        resident.save()
-        
-        
-       
+        # If there is no first name in the user add firstname as entered in the form
         if not bool(user.first_name):
-            print('FIRSTNAME IS EMPTY')
             user.first_name=account_dict['first_name']
 
 # If there is no first name in the user add firstname as entered in the form
         if not bool(user.last_name):
-            print('LASTNAME IS EMPTY')
             user.last_name=account_dict['last_name']
-        
-        user.save()
 
-        serialized_estate=EstateSerializer(estate)
-        return Response(serialized_estate.data)
+
+        return Response(Estate)
 
 
 
