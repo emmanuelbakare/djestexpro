@@ -1,6 +1,6 @@
 from rest_framework import serializers 
 from rest_framework.response import Response
-from estate.models import Estate, EstateAdmin, EstateType
+from estate.models import Estate, EstateAdmin, EstateType, Onboarding
 from accounts.api.serializers import AccountSerializer
 
 
@@ -76,3 +76,16 @@ class EstateResidentSerializer(serializers.ModelSerializer):
     #         estate.admin.add(admin)
     #     return estate
         
+
+
+class OnboardingSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Onboarding
+        fields = "__all__"
+class OnboardingListSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Onboarding
+        fields = ('id','title')
+
