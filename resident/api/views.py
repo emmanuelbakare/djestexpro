@@ -7,3 +7,6 @@ class ResidentViewSet(viewsets.ModelViewSet):
     serializer_class=ResidentSerializer
 
 
+
+
+
