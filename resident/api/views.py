@@ -6,8 +6,7 @@ class ResidentViewSet(viewsets.ModelViewSet):
     queryset=Resident.objects.all()
     serializer_class=ResidentSerializer
 
-    def perform_create(self, serializer):
-        print(serializer)
-        
+
+
 
 
