@@ -27,7 +27,6 @@ class EstateViewset(viewsets.ModelViewSet):
     parser_classes= (MultiPartParser, FormParser, JSONParser,)
 
     # list all the residents in the selected estate
-    # @parser_classes([MultiPartParser])
     @action(detail=True , methods=['GET'])
     def residents(self, request, pk=None):
         estate=self.get_object()
