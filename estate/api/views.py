@@ -50,11 +50,13 @@ class EstateViewset(viewsets.ModelViewSet):
             serialized=OnboardingSerializer(onboardings, many=True)
             return Response(serialized.data, status=200)
         elif request.method=="POST":
+ 
             estate=self.get_object()
             data=request.data.copy() # request.data is immutable and cannot be modified - make a copy of it instead request.data.copy()
             print('REQUEST: ', data)
             data['estate']=estate.pk
             # if request.FILES:
+ 
             serialized = OnboardingSerializer(data=data)
             if serialized.is_valid():
                 serialized.save()
